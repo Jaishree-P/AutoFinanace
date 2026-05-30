@@ -2,6 +2,50 @@ import { useState } from 'react'
 import Navbar from '../components/Navbar'
 import { supabase } from '../supabase'
 
+function UploadBox({
+  title,
+  file,
+  setFile,
+  captureType = 'environment'
+}) {
+
+  return (
+    <div className='bg-black border border-[#2A3344] rounded-2xl p-5'>
+
+      <p className='text-white mb-4 font-semibold'>
+        {title}
+      </p>
+
+      <input
+        type='file'
+        accept='image/*'
+        capture={captureType}
+        onChange={(e)=>setFile(e.target.files[0])}
+        className='text-white'
+      />
+
+      {file && (
+        <div className='mt-5'>
+
+          <img
+            src={URL.createObjectURL(file)}
+            alt=''
+            className='h-48 w-full object-cover rounded-2xl'
+          />
+
+          <p className='text-green-400 mt-3 text-sm'>
+            Selected :
+            {' '}
+            {file.name}
+          </p>
+
+        </div>
+      )}
+
+    </div>
+  )
+}
+
 function AddCustomer() {
 
   const [fullName, setFullName] = useState('')
@@ -196,45 +240,32 @@ function AddCustomer() {
             Customer Documents
           </h1>
 
-          <div className='grid md:grid-cols-2 gap-8 text-white'>
+          <div className='grid md:grid-cols-2 gap-8'>
 
-            <div>
-              <p className='mb-3'>Upload Customer Face</p>
+            <UploadBox
+              title='Upload Customer Face'
+              file={customerFace}
+              setFile={setCustomerFace}
+              captureType='user'
+            />
 
-              <input
-                type='file'
-                accept='image/*'
-                capture='user'
-                onChange={(e)=>setCustomerFace(e.target.files[0])}
-              />
-            </div>
+            <UploadBox
+              title='Upload Customer Aadhaar'
+              file={customerAadhar}
+              setFile={setCustomerAadhar}
+            />
 
-            <div>
-              <p className='mb-3'>Upload Customer Aadhaar</p>
+            <UploadBox
+              title='Upload Customer Signature'
+              file={customerSignature}
+              setFile={setCustomerSignature}
+            />
 
-              <input
-                type='file'
-                onChange={(e)=>setCustomerAadhar(e.target.files[0])}
-              />
-            </div>
-
-            <div>
-              <p className='mb-3'>Upload Customer Signature</p>
-
-              <input
-                type='file'
-                onChange={(e)=>setCustomerSignature(e.target.files[0])}
-              />
-            </div>
-
-            <div>
-              <p className='mb-3'>Upload Income Proof</p>
-
-              <input
-                type='file'
-                onChange={(e)=>setIncomeProof(e.target.files[0])}
-              />
-            </div>
+            <UploadBox
+              title='Upload Income Proof'
+              file={incomeProof}
+              setFile={setIncomeProof}
+            />
 
           </div>
 
@@ -242,36 +273,26 @@ function AddCustomer() {
             Guarantor Documents
           </h1>
 
-          <div className='grid md:grid-cols-2 gap-8 text-white'>
+          <div className='grid md:grid-cols-2 gap-8'>
 
-            <div>
-              <p className='mb-3'>Upload Guarantor Face</p>
+            <UploadBox
+              title='Upload Guarantor Face'
+              file={guarantorFace}
+              setFile={setGuarantorFace}
+              captureType='user'
+            />
 
-              <input
-                type='file'
-                accept='image/*'
-                capture='user'
-                onChange={(e)=>setGuarantorFace(e.target.files[0])}
-              />
-            </div>
+            <UploadBox
+              title='Upload Guarantor Aadhaar'
+              file={guarantorAadhar}
+              setFile={setGuarantorAadhar}
+            />
 
-            <div>
-              <p className='mb-3'>Upload Guarantor Aadhaar</p>
-
-              <input
-                type='file'
-                onChange={(e)=>setGuarantorAadhar(e.target.files[0])}
-              />
-            </div>
-
-            <div>
-              <p className='mb-3'>Upload Guarantor Signature</p>
-
-              <input
-                type='file'
-                onChange={(e)=>setGuarantorSignature(e.target.files[0])}
-              />
-            </div>
+            <UploadBox
+              title='Upload Guarantor Signature'
+              file={guarantorSignature}
+              setFile={setGuarantorSignature}
+            />
 
           </div>
 
@@ -279,49 +300,31 @@ function AddCustomer() {
             Vehicle Delivery Photos
           </h1>
 
-          <div className='grid md:grid-cols-2 gap-8 text-white'>
+          <div className='grid md:grid-cols-2 gap-8'>
 
-            <div>
-              <p className='mb-3'>Upload Vehicle Front View</p>
+            <UploadBox
+              title='Upload Vehicle Front View'
+              file={vehicleFront}
+              setFile={setVehicleFront}
+            />
 
-              <input
-                type='file'
-                accept='image/*'
-                capture='environment'
-                onChange={(e)=>setVehicleFront(e.target.files[0])}
-              />
-            </div>
+            <UploadBox
+              title='Upload Vehicle Side View'
+              file={vehicleSide}
+              setFile={setVehicleSide}
+            />
 
-            <div>
-              <p className='mb-3'>Upload Vehicle Side View</p>
+            <UploadBox
+              title='Upload Odometer Photo'
+              file={odometerPhoto}
+              setFile={setOdometerPhoto}
+            />
 
-              <input
-                type='file'
-                accept='image/*'
-                capture='environment'
-                onChange={(e)=>setVehicleSide(e.target.files[0])}
-              />
-            </div>
-
-            <div>
-              <p className='mb-3'>Upload Odometer Photo</p>
-
-              <input
-                type='file'
-                accept='image/*'
-                capture='environment'
-                onChange={(e)=>setOdometerPhoto(e.target.files[0])}
-              />
-            </div>
-
-            <div>
-              <p className='mb-3'>Upload RC Book</p>
-
-              <input
-                type='file'
-                onChange={(e)=>setRcBook(e.target.files[0])}
-              />
-            </div>
+            <UploadBox
+              title='Upload RC Book'
+              file={rcBook}
+              setFile={setRcBook}
+            />
 
           </div>
 
