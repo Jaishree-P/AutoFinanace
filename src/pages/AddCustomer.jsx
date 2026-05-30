@@ -17,12 +17,20 @@ function UploadBox({
       </p>
 
       <input
-        type='file'
-        accept='image/*'
-        capture={captureType}
-        onChange={(e)=>setFile(e.target.files[0])}
-        className='text-white'
-      />
+  type='file'
+  accept='image/*'
+  capture
+  onChange={(e)=>setFile(e.target.files[0])}
+  className='hidden'
+  id={title}
+/>
+
+<label
+  htmlFor={title}
+  className='bg-cyan-400 text-black px-5 py-3 rounded-2xl font-bold inline-block cursor-pointer'
+>
+  Open Camera / Upload
+</label>
 
       {file && (
         <div className='mt-5'>
