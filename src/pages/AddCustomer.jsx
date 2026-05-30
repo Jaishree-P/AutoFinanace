@@ -1,0 +1,373 @@
+import { useState } from 'react'
+import Navbar from '../components/Navbar'
+import { supabase } from '../supabase'
+
+function AddCustomer() {
+
+  const [fullName, setFullName] = useState('')
+  const [phone, setPhone] = useState('')
+  const [loanId, setLoanId] = useState('')
+  const [vehicleNumber, setVehicleNumber] = useState('')
+
+  const [guarantorName, setGuarantorName] = useState('')
+  const [guarantorPhone, setGuarantorPhone] = useState('')
+
+  const [address, setAddress] = useState('')
+
+  const [latitude, setLatitude] = useState('')
+  const [longitude, setLongitude] = useState('')
+
+  const [customerFace, setCustomerFace] = useState(null)
+  const [customerAadhar, setCustomerAadhar] = useState(null)
+  const [customerSignature, setCustomerSignature] = useState(null)
+  const [incomeProof, setIncomeProof] = useState(null)
+
+  const [guarantorFace, setGuarantorFace] = useState(null)
+  const [guarantorAadhar, setGuarantorAadhar] = useState(null)
+  const [guarantorSignature, setGuarantorSignature] = useState(null)
+
+  const [vehicleFront, setVehicleFront] = useState(null)
+  const [vehicleSide, setVehicleSide] = useState(null)
+  const [odometerPhoto, setOdometerPhoto] = useState(null)
+  const [rcBook, setRcBook] = useState(null)
+
+  const uploadFile = async(file) => {
+
+    if(!file) return ''
+
+    const fileName = `${loanId}/${Date.now()}-${file.name}`
+
+    const { error } = await supabase.storage
+      .from('customer-documents')
+      .upload(fileName, file)
+
+    if(error){
+      alert(error.message)
+      return ''
+    }
+
+    const { data } = supabase.storage
+      .from('customer-documents')
+      .getPublicUrl(fileName)
+
+    return data.publicUrl
+  }
+
+  const captureLocation = () => {
+
+    navigator.geolocation.getCurrentPosition((position) => {
+
+      setLatitude(position.coords.latitude)
+      setLongitude(position.coords.longitude)
+
+    })
+  }
+
+  const submitCustomer = async() => {
+
+    const customerFaceUrl = await uploadFile(customerFace)
+    const customerAadharUrl = await uploadFile(customerAadhar)
+    const customerSignatureUrl = await uploadFile(customerSignature)
+    const incomeProofUrl = await uploadFile(incomeProof)
+
+    const guarantorFaceUrl = await uploadFile(guarantorFace)
+    const guarantorAadharUrl = await uploadFile(guarantorAadhar)
+    const guarantorSignatureUrl = await uploadFile(guarantorSignature)
+
+    const vehicleFrontUrl = await uploadFile(vehicleFront)
+    const vehicleSideUrl = await uploadFile(vehicleSide)
+    const odometerPhotoUrl = await uploadFile(odometerPhoto)
+    const rcBookUrl = await uploadFile(rcBook)
+
+    const { error } = await supabase
+      .from('customers')
+      .insert([
+        {
+          loan_id: loanId,
+
+          full_name: fullName,
+          phone,
+          vehicle_number: vehicleNumber,
+
+          guarantor_name: guarantorName,
+          guarantor_phone: guarantorPhone,
+
+          customer_face: customerFaceUrl,
+          customer_aadhar: customerAadharUrl,
+          customer_signature: customerSignatureUrl,
+          income_proof: incomeProofUrl,
+
+          guarantor_face: guarantorFaceUrl,
+          guarantor_aadhar: guarantorAadharUrl,
+          guarantor_signature: guarantorSignatureUrl,
+
+          vehicle_front: vehicleFrontUrl,
+          vehicle_side: vehicleSideUrl,
+          odometer_photo: odometerPhotoUrl,
+          rc_book: rcBookUrl,
+
+          address,
+
+          latitude,
+          longitude,
+
+          approval_status:'pending',
+
+          recovery_status:'none'
+        }
+      ])
+
+    if(error){
+      alert(error.message)
+      return
+    }
+
+    alert('Customer Added Successfully')
+  }
+
+  return (
+    <div className='min-h-screen bg-[#050B18]'>
+
+      <Navbar title='ADD CUSTOMER' role='FIELD AGENT' />
+
+      <div className='p-6'>
+
+        <div className='bg-[#101826] border border-[#2A3344] rounded-3xl p-8'>
+
+          <h1 className='text-4xl text-[#D6A64F] mb-8'>
+            Customer Details
+          </h1>
+
+          <div className='grid md:grid-cols-2 gap-5'>
+
+            <input
+              placeholder='Full Name'
+              value={fullName}
+              onChange={(e)=>setFullName(e.target.value)}
+              className='bg-black p-5 rounded-2xl text-white outline-none'
+            />
+
+            <input
+              placeholder='Mobile Number'
+              value={phone}
+              onChange={(e)=>setPhone(e.target.value)}
+              className='bg-black p-5 rounded-2xl text-white outline-none'
+            />
+
+            <input
+              placeholder='Loan ID'
+              value={loanId}
+              onChange={(e)=>setLoanId(e.target.value)}
+              className='bg-black p-5 rounded-2xl text-white outline-none'
+            />
+
+            <input
+              placeholder='Vehicle Number'
+              value={vehicleNumber}
+              onChange={(e)=>setVehicleNumber(e.target.value)}
+              className='bg-black p-5 rounded-2xl text-white outline-none'
+            />
+
+          </div>
+
+          <h1 className='text-4xl text-[#D6A64F] mt-14 mb-8'>
+            Guarantor Details
+          </h1>
+
+          <div className='grid md:grid-cols-2 gap-5'>
+
+            <input
+              placeholder='Guarantor Name'
+              value={guarantorName}
+              onChange={(e)=>setGuarantorName(e.target.value)}
+              className='bg-black p-5 rounded-2xl text-white outline-none'
+            />
+
+            <input
+              placeholder='Guarantor Mobile Number'
+              value={guarantorPhone}
+              onChange={(e)=>setGuarantorPhone(e.target.value)}
+              className='bg-black p-5 rounded-2xl text-white outline-none'
+            />
+
+          </div>
+
+          <h1 className='text-4xl text-[#D6A64F] mt-14 mb-8'>
+            Customer Documents
+          </h1>
+
+          <div className='grid md:grid-cols-2 gap-8 text-white'>
+
+            <div>
+              <p className='mb-3'>Upload Customer Face</p>
+
+              <input
+                type='file'
+                accept='image/*'
+                capture='user'
+                onChange={(e)=>setCustomerFace(e.target.files[0])}
+              />
+            </div>
+
+            <div>
+              <p className='mb-3'>Upload Customer Aadhaar</p>
+
+              <input
+                type='file'
+                onChange={(e)=>setCustomerAadhar(e.target.files[0])}
+              />
+            </div>
+
+            <div>
+              <p className='mb-3'>Upload Customer Signature</p>
+
+              <input
+                type='file'
+                onChange={(e)=>setCustomerSignature(e.target.files[0])}
+              />
+            </div>
+
+            <div>
+              <p className='mb-3'>Upload Income Proof</p>
+
+              <input
+                type='file'
+                onChange={(e)=>setIncomeProof(e.target.files[0])}
+              />
+            </div>
+
+          </div>
+
+          <h1 className='text-4xl text-[#D6A64F] mt-14 mb-8'>
+            Guarantor Documents
+          </h1>
+
+          <div className='grid md:grid-cols-2 gap-8 text-white'>
+
+            <div>
+              <p className='mb-3'>Upload Guarantor Face</p>
+
+              <input
+                type='file'
+                accept='image/*'
+                capture='user'
+                onChange={(e)=>setGuarantorFace(e.target.files[0])}
+              />
+            </div>
+
+            <div>
+              <p className='mb-3'>Upload Guarantor Aadhaar</p>
+
+              <input
+                type='file'
+                onChange={(e)=>setGuarantorAadhar(e.target.files[0])}
+              />
+            </div>
+
+            <div>
+              <p className='mb-3'>Upload Guarantor Signature</p>
+
+              <input
+                type='file'
+                onChange={(e)=>setGuarantorSignature(e.target.files[0])}
+              />
+            </div>
+
+          </div>
+
+          <h1 className='text-4xl text-[#D6A64F] mt-14 mb-8'>
+            Vehicle Delivery Photos
+          </h1>
+
+          <div className='grid md:grid-cols-2 gap-8 text-white'>
+
+            <div>
+              <p className='mb-3'>Upload Vehicle Front View</p>
+
+              <input
+                type='file'
+                accept='image/*'
+                capture='environment'
+                onChange={(e)=>setVehicleFront(e.target.files[0])}
+              />
+            </div>
+
+            <div>
+              <p className='mb-3'>Upload Vehicle Side View</p>
+
+              <input
+                type='file'
+                accept='image/*'
+                capture='environment'
+                onChange={(e)=>setVehicleSide(e.target.files[0])}
+              />
+            </div>
+
+            <div>
+              <p className='mb-3'>Upload Odometer Photo</p>
+
+              <input
+                type='file'
+                accept='image/*'
+                capture='environment'
+                onChange={(e)=>setOdometerPhoto(e.target.files[0])}
+              />
+            </div>
+
+            <div>
+              <p className='mb-3'>Upload RC Book</p>
+
+              <input
+                type='file'
+                onChange={(e)=>setRcBook(e.target.files[0])}
+              />
+            </div>
+
+          </div>
+
+          <h1 className='text-4xl text-[#D6A64F] mt-14 mb-8'>
+            Residence Location
+          </h1>
+
+          <div className='grid gap-5'>
+
+            <textarea
+              placeholder='Enter Complete Address'
+              value={address}
+              onChange={(e)=>setAddress(e.target.value)}
+              className='bg-black p-5 rounded-2xl text-white outline-none h-36'
+            />
+
+            <button
+              onClick={captureLocation}
+              className='bg-cyan-400 text-black py-5 rounded-2xl font-bold'
+            >
+              Capture GPS Location
+            </button>
+
+            <div className='text-gray-400'>
+              Latitude : {latitude}
+            </div>
+
+            <div className='text-gray-400'>
+              Longitude : {longitude}
+            </div>
+
+          </div>
+
+          <button
+            onClick={submitCustomer}
+            className='mt-12 bg-[#D6A64F] text-black px-10 py-5 rounded-2xl font-bold text-xl'
+          >
+            Submit Customer
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+  )
+}
+
+export default AddCustomer
