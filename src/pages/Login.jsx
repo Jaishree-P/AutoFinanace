@@ -32,7 +32,14 @@ function Login() {
       return
     }
 
-    localStorage.setItem('user', JSON.stringify(data))
+    localStorage.setItem(
+      'user',
+      JSON.stringify({
+        id:data.id,
+        username:data.username,
+        role:data.role
+      })
+    )
 
     if (role === 'field-agent') {
       navigate('/field-dashboard')
@@ -48,12 +55,12 @@ function Login() {
   }
 
   return (
-    <div className='min-h-screen flex items-center justify-center bg-[#050B18]'>
+    <div className='min-h-screen flex items-center justify-center bg-[#050B18] px-4'>
 
-      <div className='bg-[#101826] border border-[#2A3344] p-10 rounded-3xl w-[420px]'>
+      <div className='bg-[#101826] border border-[#2A3344] p-6 md:p-10 rounded-3xl w-full max-w-[420px]'>
 
         <h1
-          className='text-5xl text-[#D6A64F] text-center mb-10 capitalize'
+          className='text-4xl md:text-5xl text-[#D6A64F] text-center mb-10 capitalize'
           style={{ fontFamily: 'Oswald' }}
         >
           {role} Login
@@ -64,7 +71,7 @@ function Login() {
           placeholder='Username / பயனர் பெயர்'
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          className='w-full bg-black border border-[#2A3344] p-5 rounded-2xl mb-5 text-white outline-none'
+          className='w-full bg-black border border-[#2A3344] p-4 md:p-5 rounded-2xl mb-5 text-white outline-none text-sm md:text-base'
         />
 
         <input
@@ -72,12 +79,12 @@ function Login() {
           placeholder='Password / கடவுச்சொல்'
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className='w-full bg-black border border-[#2A3344] p-5 rounded-2xl mb-8 text-white outline-none'
+          className='w-full bg-black border border-[#2A3344] p-4 md:p-5 rounded-2xl mb-8 text-white outline-none text-sm md:text-base'
         />
 
         <button
           onClick={login}
-          className='w-full bg-[#D6A64F] text-black py-5 rounded-2xl font-bold text-xl'
+          className='w-full bg-[#D6A64F] text-black py-4 md:py-5 rounded-2xl font-bold text-lg md:text-xl'
         >
           LOGIN / உள்நுழைய
         </button>
@@ -88,4 +95,4 @@ function Login() {
   )
 }
 
-export default Login 
+export default Login

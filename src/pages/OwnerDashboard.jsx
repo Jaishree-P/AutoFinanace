@@ -1,9 +1,13 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+
 import Navbar from '../components/Navbar'
 import CustomerModal from '../components/CustomerModal'
 import { supabase } from '../supabase'
 
 function OwnerDashboard() {
+
+  const navigate = useNavigate()
 
   const [customers, setCustomers] = useState([])
 
@@ -101,6 +105,23 @@ function OwnerDashboard() {
     fetchCounts()
   }
 
+  const deleteCustomer = async(id) => {
+
+    const confirmDelete = window.confirm(
+      'Are you sure you want to delete this customer?'
+    )
+
+    if(!confirmDelete) return
+
+    await supabase
+      .from('customers')
+      .delete()
+      .eq('id', id)
+
+    fetchCustomers()
+    fetchCounts()
+  }
+
   const filteredCustomers = customers.filter((customer) => {
 
     const value = search.toLowerCase()
@@ -119,12 +140,23 @@ function OwnerDashboard() {
 
       <div className='p-4 md:p-6'>
 
-        <h1
-          className='text-4xl md:text-5xl text-[#D6A64F] mb-10'
-          style={{ fontFamily:'Oswald' }}
-        >
-          OWNER PANEL
-        </h1>
+        <div className='flex flex-col md:flex-row md:justify-between md:items-center gap-5 mb-10'>
+
+          <h1
+            className='text-4xl md:text-5xl text-[#D6A64F]'
+            style={{ fontFamily:'Oswald' }}
+          >
+            OWNER PANEL
+          </h1>
+
+          <button
+            onClick={() => navigate('/add-customer')}
+            className='bg-[#D6A64F] text-black px-6 md:px-8 py-4 rounded-2xl font-bold w-full md:w-auto'
+          >
+            + Add Customer
+          </button>
+
+        </div>
 
         <div className='grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-5 mb-10'>
 
@@ -264,6 +296,16 @@ function OwnerDashboard() {
                       Recovery
                     </button>
                   )}
+
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      deleteCustomer(customer.id)
+                    }}
+                    className='bg-gray-700 text-white px-6 py-3 rounded-2xl font-bold w-full'
+                  >
+                    Delete
+                  </button>
 
                 </div>
 

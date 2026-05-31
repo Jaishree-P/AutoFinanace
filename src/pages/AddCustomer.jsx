@@ -119,6 +119,32 @@ function AddCustomer() {
 
   const submitCustomer = async() => {
 
+    if(
+  !fullName
+  || !phone
+  || !loanId
+  || !vehicleNumber
+  || !guarantorName
+  || !guarantorPhone
+  || !address
+  || !customerFace
+  || !customerAadhar
+  || !customerSignature
+  || !incomeProof
+  || !guarantorFace
+  || !guarantorAadhar
+  || !guarantorSignature
+  || !vehicleFront
+  || !vehicleSide
+  || !odometerPhoto
+  || !rcBook
+){
+
+  alert('Please fill all fields and upload all documents')
+
+  return
+}
+
     setLoading(true)
 
     const customerFaceUrl = await uploadFile(customerFace)

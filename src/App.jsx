@@ -22,7 +22,7 @@ function App(){
       <Route
         path='/field-dashboard'
         element={
-          <ProtectedRoute allowedRole='field-agent'>
+          <ProtectedRoute allowedRoles={['field-agent']}>
             <FieldDashboard />
           </ProtectedRoute>
         }
@@ -31,7 +31,7 @@ function App(){
       <Route
         path='/recovery-dashboard'
         element={
-          <ProtectedRoute allowedRole='recovery'>
+          <ProtectedRoute allowedRoles={['recovery']}>
             <RecoveryDashboard />
           </ProtectedRoute>
         }
@@ -40,7 +40,7 @@ function App(){
       <Route
         path='/owner-dashboard'
         element={
-          <ProtectedRoute allowedRole='owner'>
+          <ProtectedRoute allowedRoles={['owner']}>
             <OwnerDashboard />
           </ProtectedRoute>
         }
@@ -49,7 +49,7 @@ function App(){
       <Route
         path='/add-customer'
         element={
-          <ProtectedRoute allowedRole='field-agent'>
+          <ProtectedRoute allowedRoles={['field-agent', 'owner']}>
             <AddCustomer />
           </ProtectedRoute>
         }
@@ -58,7 +58,7 @@ function App(){
       <Route
         path='/records'
         element={
-          <ProtectedRoute allowedRole='field-agent'>
+          <ProtectedRoute allowedRoles={['field-agent', 'owner']}>
             <Records />
           </ProtectedRoute>
         }
