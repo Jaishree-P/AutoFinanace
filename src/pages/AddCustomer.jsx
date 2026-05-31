@@ -27,7 +27,7 @@ function UploadBox({
 
 <label
   htmlFor={title}
-  className='bg-cyan-400 text-black px-5 py-3 rounded-2xl font-bold inline-block cursor-pointer'
+  className='bg-cyan-400 text-black px-3 py-2 rounded-xl font-semibold inline-block cursor-pointer text-sm'
 >
   Open Camera / Upload
 </label>
