@@ -19,7 +19,6 @@ function UploadBox({
       <input
   type='file'
   accept='image/*'
-  capture
   onChange={(e)=>setFile(e.target.files[0])}
   className='hidden'
   id={title}
