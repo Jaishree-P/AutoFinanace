@@ -1,6 +1,114 @@
+import jsPDF from 'jspdf'
+
 function CustomerModal({ customer, onClose }) {
 
   if(!customer) return null
+
+  const downloadPDF = async () => {
+
+  const doc = new jsPDF()
+
+  const loadImage = (url) => {
+
+    return new Promise((resolve) => {
+
+      const img = new Image()
+
+      img.crossOrigin = 'Anonymous'
+
+      img.onload = () => {
+
+        const canvas = document.createElement('canvas')
+
+        canvas.width = img.width
+        canvas.height = img.height
+
+        const ctx = canvas.getContext('2d')
+
+        ctx.drawImage(img, 0, 0)
+
+        resolve(canvas.toDataURL('image/jpeg'))
+      }
+
+      img.src = url
+    })
+  }
+
+  doc.setFontSize(22)
+
+  doc.text('AUTOFINANCE CUSTOMER REPORT', 20, 20)
+
+  doc.setFontSize(14)
+
+  doc.text(`Customer Name : ${customer.full_name}`, 20, 40)
+  doc.text(`Phone : ${customer.phone}`, 20, 50)
+  doc.text(`Loan ID : ${customer.loan_id}`, 20, 60)
+  doc.text(`Vehicle Number : ${customer.vehicle_number}`, 20, 70)
+
+  doc.text(`Guarantor Name : ${customer.guarantor_name}`, 20, 90)
+  doc.text(`Guarantor Phone : ${customer.guarantor_phone}`, 20, 100)
+
+  doc.text(`Approval Status : ${customer.approval_status}`, 20, 120)
+  doc.text(`Recovery Status : ${customer.recovery_status}`, 20, 130)
+  doc.text(`Visit Status : ${customer.visited_status}`, 20, 140)
+
+  if(customer.visited_at){
+
+    doc.text(
+      `Visited At : ${new Date(customer.visited_at).toLocaleString()}`,
+      20,
+      150
+    )
+  }
+
+  doc.text(`Address : ${customer.address}`, 20, 170)
+
+  doc.text(
+    `GPS : ${customer.latitude}, ${customer.longitude}`,
+    20,
+    180
+  )
+
+  let y = 210
+
+  const addPhoto = async(title, imageUrl) => {
+
+    if(!imageUrl) return
+
+    if(y > 240){
+
+      doc.addPage()
+
+      y = 20
+    }
+
+    const image = await loadImage(imageUrl)
+
+    doc.setFontSize(16)
+
+    doc.text(title, 20, y)
+
+    doc.addImage(image, 'JPEG', 20, y + 10, 80, 60)
+
+    y += 80
+  }
+
+  await addPhoto('Customer Face', customer.customer_face)
+
+  await addPhoto('Customer Aadhaar', customer.customer_aadhar)
+
+  await addPhoto('Guarantor Face', customer.guarantor_face)
+
+  await addPhoto('Guarantor Aadhaar', customer.guarantor_aadhar)
+
+  await addPhoto('Vehicle Front View', customer.vehicle_front)
+
+  await addPhoto('Vehicle Side View', customer.vehicle_side)
+
+  await addPhoto('Odometer Photo', customer.odometer_photo)
+
+  doc.save(`${customer.full_name}.pdf`)
+}
 
   return (
     <div className='fixed inset-0 bg-black/80 z-50 overflow-y-auto'>
@@ -15,12 +123,23 @@ function CustomerModal({ customer, onClose }) {
               Customer Details
             </h1>
 
-            <button
-              onClick={onClose}
-              className='bg-red-500 text-white px-5 py-3 rounded-2xl font-bold w-full md:w-auto'
-            >
-              Close
-            </button>
+            <div className='flex flex-col md:flex-row gap-3 w-full md:w-auto'>
+
+              <button
+                onClick={downloadPDF}
+                className='bg-cyan-400 text-black px-5 py-3 rounded-2xl font-bold w-full md:w-auto'
+              >
+                Download PDF
+              </button>
+
+              <button
+                onClick={onClose}
+                className='bg-red-500 text-white px-5 py-3 rounded-2xl font-bold w-full md:w-auto'
+              >
+                Close
+              </button>
+
+            </div>
 
           </div>
 
@@ -124,148 +243,6 @@ function CustomerModal({ customer, onClose }) {
 
               </div>
 
-            </div>
-
-          </div>
-
-          <h2 className='text-3xl text-[#D6A64F] mt-14 mb-8'>
-            Customer Documents
-          </h2>
-
-          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
-
-            <div>
-              <p className='text-white mb-3'>Customer Face</p>
-
-              <img
-                src={customer.customer_face}
-                alt=''
-                className='h-60 md:h-52 w-full object-cover rounded-2xl'
-              />
-            </div>
-
-            <div>
-              <p className='text-white mb-3'>Customer Aadhaar</p>
-
-              <img
-                src={customer.customer_aadhar}
-                alt=''
-                className='h-60 md:h-52 w-full object-cover rounded-2xl'
-              />
-            </div>
-
-            <div>
-              <p className='text-white mb-3'>Customer Signature</p>
-
-              <a
-                href={customer.customer_signature}
-                target='_blank'
-                className='bg-cyan-400 text-black flex justify-center items-center h-60 md:h-52 rounded-2xl font-bold'
-              >
-                Open Signature
-              </a>
-            </div>
-
-            <div>
-              <p className='text-white mb-3'>Income Proof</p>
-
-              <a
-                href={customer.income_proof}
-                target='_blank'
-                className='bg-cyan-400 text-black flex justify-center items-center h-60 md:h-52 rounded-2xl font-bold'
-              >
-                Open Income Proof
-              </a>
-            </div>
-
-          </div>
-
-          <h2 className='text-3xl text-[#D6A64F] mt-14 mb-8'>
-            Guarantor Documents
-          </h2>
-
-          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
-
-            <div>
-              <p className='text-white mb-3'>Guarantor Face</p>
-
-              <img
-                src={customer.guarantor_face}
-                alt=''
-                className='h-60 md:h-52 w-full object-cover rounded-2xl'
-              />
-            </div>
-
-            <div>
-              <p className='text-white mb-3'>Guarantor Aadhaar</p>
-
-              <img
-                src={customer.guarantor_aadhar}
-                alt=''
-                className='h-60 md:h-52 w-full object-cover rounded-2xl'
-              />
-            </div>
-
-            <div>
-              <p className='text-white mb-3'>Guarantor Signature</p>
-
-              <a
-                href={customer.guarantor_signature}
-                target='_blank'
-                className='bg-cyan-400 text-black flex justify-center items-center h-60 md:h-52 rounded-2xl font-bold'
-              >
-                Open Signature
-              </a>
-            </div>
-
-          </div>
-
-          <h2 className='text-3xl text-[#D6A64F] mt-14 mb-8'>
-            Vehicle Documents
-          </h2>
-
-          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6'>
-
-            <div>
-              <p className='text-white mb-3'>Vehicle Front View</p>
-
-              <img
-                src={customer.vehicle_front}
-                alt=''
-                className='h-60 md:h-52 w-full object-cover rounded-2xl'
-              />
-            </div>
-
-            <div>
-              <p className='text-white mb-3'>Vehicle Side View</p>
-
-              <img
-                src={customer.vehicle_side}
-                alt=''
-                className='h-60 md:h-52 w-full object-cover rounded-2xl'
-              />
-            </div>
-
-            <div>
-              <p className='text-white mb-3'>Odometer Photo</p>
-
-              <img
-                src={customer.odometer_photo}
-                alt=''
-                className='h-60 md:h-52 w-full object-cover rounded-2xl'
-              />
-            </div>
-
-            <div>
-              <p className='text-white mb-3'>RC Book</p>
-
-              <a
-                href={customer.rc_book}
-                target='_blank'
-                className='bg-cyan-400 text-black flex justify-center items-center h-60 md:h-52 rounded-2xl font-bold'
-              >
-                Open RC Book
-              </a>
             </div>
 
           </div>
