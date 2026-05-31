@@ -16,20 +16,40 @@ function UploadBox({
         {title}
       </p>
 
-      <input
-  type='file'
-  accept='image/*'
-  onChange={(e)=>setFile(e.target.files[0])}
-  className='hidden'
-  id={title}
-/>
+      <div className='flex gap-3 flex-wrap'>
 
-<label
-  htmlFor={title}
-  className='bg-cyan-400 text-black px-3 py-2 rounded-xl font-semibold inline-block cursor-pointer text-sm'
->
-  Open Camera / Upload
-</label>
+  <label
+    htmlFor={`${title}-camera`}
+    className='bg-cyan-400 text-black px-3 py-2 rounded-xl font-semibold inline-block cursor-pointer text-sm'
+  >
+    Camera
+  </label>
+
+  <input
+    type='file'
+    accept='image/*'
+    capture='environment'
+    onChange={(e)=>setFile(e.target.files[0])}
+    className='hidden'
+    id={`${title}-camera`}
+  />
+
+  <label
+    htmlFor={`${title}-gallery`}
+    className='bg-[#D6A64F] text-black px-3 py-2 rounded-xl font-semibold inline-block cursor-pointer text-sm'
+  >
+    Upload
+  </label>
+
+  <input
+    type='file'
+    accept='image/*'
+    onChange={(e)=>setFile(e.target.files[0])}
+    className='hidden'
+    id={`${title}-gallery`}
+  />
+
+</div>
 
       {file && (
         <div className='mt-5'>
