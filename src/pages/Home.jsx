@@ -7,11 +7,11 @@ function Home(){
   return(
     <div className='min-h-screen bg-[#050B18] flex flex-col justify-center items-center p-6'>
 
-      <h1 className='text-6xl text-[#D6A64F] mb-4' style={{fontFamily:'Oswald'}}>
+      <h1 className='text-4xl text-[#D6A64F] mb-4' style={{fontFamily:'Oswald'}}>
         SRI AMARAVATHI FINCORP
         
       </h1>
-      <h1 className='text-4xl text-[#D6A64F] mb-4' style={{fontFamily:'Oswald'}}>
+      <h1 className='text-2xl text-[#D6A64F] mb-4' style={{fontFamily:'Oswald'}}>
         
         ஸ்ரீ அமராவதி ஃபின்கார்ப்
       </h1>
