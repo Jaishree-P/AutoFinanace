@@ -8,11 +8,16 @@ function Home(){
     <div className='min-h-screen bg-[#050B18] flex flex-col justify-center items-center p-6'>
 
       <h1 className='text-6xl text-[#D6A64F] mb-4' style={{fontFamily:'Oswald'}}>
-        AUTOFINANCE
+        SRI AMARAVATHI FINCORP
+        
+      </h1>
+      <h1 className='text-4xl text-[#D6A64F] mb-4' style={{fontFamily:'Oswald'}}>
+        
+        ஸ்ரீ அமராவதி ஃபின்கார்ப்
       </h1>
 
       <p className='text-gray-400 mb-14'>
-        Vehicle Finance Verification & Recovery
+        Field Documentation System
       </p>
 
       <div className='grid md:grid-cols-3 gap-8 w-full max-w-6xl'>

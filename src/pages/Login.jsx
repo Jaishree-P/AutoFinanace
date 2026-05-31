@@ -61,7 +61,7 @@ function Login() {
 
         <input
           type='text'
-          placeholder='Username'
+          placeholder='Username / பயனர் பெயர்'
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           className='w-full bg-black border border-[#2A3344] p-5 rounded-2xl mb-5 text-white outline-none'
@@ -69,7 +69,7 @@ function Login() {
 
         <input
           type='password'
-          placeholder='Password'
+          placeholder='Password / கடவுச்சொல்'
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           className='w-full bg-black border border-[#2A3344] p-5 rounded-2xl mb-8 text-white outline-none'
@@ -79,7 +79,7 @@ function Login() {
           onClick={login}
           className='w-full bg-[#D6A64F] text-black py-5 rounded-2xl font-bold text-xl'
         >
-          LOGIN
+          LOGIN / உள்நுழைய
         </button>
 
       </div>
@@ -88,4 +88,4 @@ function Login() {
   )
 }
 
-export default Login
+export default Login 
