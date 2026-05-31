@@ -83,6 +83,8 @@ function AddCustomer() {
   const [odometerPhoto, setOdometerPhoto] = useState(null)
   const [rcBook, setRcBook] = useState(null)
 
+  const [loading, setLoading] = useState(false)
+
   const uploadFile = async(file) => {
 
     if(!file) return ''
@@ -117,6 +119,8 @@ function AddCustomer() {
 
   const submitCustomer = async() => {
 
+    setLoading(true)
+
     const customerFaceUrl = await uploadFile(customerFace)
     const customerAadharUrl = await uploadFile(customerAadhar)
     const customerSignatureUrl = await uploadFile(customerSignature)
@@ -130,6 +134,8 @@ function AddCustomer() {
     const vehicleSideUrl = await uploadFile(vehicleSide)
     const odometerPhotoUrl = await uploadFile(odometerPhoto)
     const rcBookUrl = await uploadFile(rcBook)
+
+    
 
     const { error } = await supabase
       .from('customers')
@@ -170,11 +176,17 @@ function AddCustomer() {
       ])
 
     if(error){
-      alert(error.message)
-      return
-    }
 
-    alert('Customer Added Successfully')
+  setLoading(false)
+
+  alert(error.message)
+
+  return
+}
+
+    setLoading(false)
+
+alert('Customer Added Successfully')
   }
 
   return (
@@ -367,12 +379,21 @@ function AddCustomer() {
           </div>
 
           <button
-            onClick={submitCustomer}
-            className='mt-12 bg-[#D6A64F] text-black px-10 py-5 rounded-2xl font-bold text-xl'
-          >
-            Submit Customer
-          </button>
+  onClick={submitCustomer}
+  disabled={loading}
+  className={`mt-12 px-10 py-5 rounded-2xl font-bold text-xl ${
+    loading
+      ? 'bg-gray-500 text-white'
+      : 'bg-[#D6A64F] text-black'
+  }`}
+>
 
+  {loading
+    ? 'Uploading Customer...'
+    : 'Submit Customer'
+  }
+
+</button>
         </div>
 
       </div>

@@ -117,39 +117,75 @@ function OwnerDashboard() {
 
       <Navbar title='OWNER DASHBOARD' role='OWNER' />
 
-      <div className='p-6'>
+      <div className='p-4 md:p-6'>
 
         <h1
-          className='text-5xl text-[#D6A64F] mb-10'
+          className='text-4xl md:text-5xl text-[#D6A64F] mb-10'
           style={{ fontFamily:'Oswald' }}
         >
           OWNER PANEL
         </h1>
 
-        <div className='grid md:grid-cols-4 gap-5 mb-10'>
+        <div className='grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-5 mb-10'>
 
-          <div onClick={() => setActiveFilter('all')}
-            className='bg-[#101826] border border-[#2A3344] rounded-3xl p-6 cursor-pointer'>
-            <h1 className='text-5xl text-[#D6A64F] mb-2'>{submittedCount}</h1>
-            <p className='text-gray-400'>Total</p>
+          <div
+            onClick={() => setActiveFilter('all')}
+            className='bg-[#101826] border border-[#2A3344] rounded-3xl p-4 md:p-6 cursor-pointer'
+          >
+
+            <h1 className='text-3xl md:text-5xl text-[#D6A64F] mb-2'>
+              {submittedCount}
+            </h1>
+
+            <p className='text-gray-400 text-sm md:text-base'>
+              Total
+            </p>
+
           </div>
 
-          <div onClick={() => setActiveFilter('pending')}
-            className='bg-[#101826] border border-[#2A3344] rounded-3xl p-6 cursor-pointer'>
-            <h1 className='text-5xl text-yellow-400 mb-2'>{pendingCount}</h1>
-            <p className='text-gray-400'>Pending</p>
+          <div
+            onClick={() => setActiveFilter('pending')}
+            className='bg-[#101826] border border-[#2A3344] rounded-3xl p-4 md:p-6 cursor-pointer'
+          >
+
+            <h1 className='text-3xl md:text-5xl text-yellow-400 mb-2'>
+              {pendingCount}
+            </h1>
+
+            <p className='text-gray-400 text-sm md:text-base'>
+              Pending
+            </p>
+
           </div>
 
-          <div onClick={() => setActiveFilter('approved')}
-            className='bg-[#101826] border border-[#2A3344] rounded-3xl p-6 cursor-pointer'>
-            <h1 className='text-5xl text-green-400 mb-2'>{approvedCount}</h1>
-            <p className='text-gray-400'>Approved</p>
+          <div
+            onClick={() => setActiveFilter('approved')}
+            className='bg-[#101826] border border-[#2A3344] rounded-3xl p-4 md:p-6 cursor-pointer'
+          >
+
+            <h1 className='text-3xl md:text-5xl text-green-400 mb-2'>
+              {approvedCount}
+            </h1>
+
+            <p className='text-gray-400 text-sm md:text-base'>
+              Approved
+            </p>
+
           </div>
 
-          <div onClick={() => setActiveFilter('recovery')}
-            className='bg-[#101826] border border-[#2A3344] rounded-3xl p-6 cursor-pointer'>
-            <h1 className='text-5xl text-red-400 mb-2'>{recoveryCount}</h1>
-            <p className='text-gray-400'>Recovery</p>
+          <div
+            onClick={() => setActiveFilter('recovery')}
+            className='bg-[#101826] border border-[#2A3344] rounded-3xl p-4 md:p-6 cursor-pointer'
+          >
+
+            <h1 className='text-3xl md:text-5xl text-red-400 mb-2'>
+              {recoveryCount}
+            </h1>
+
+            <p className='text-gray-400 text-sm md:text-base'>
+              Recovery
+            </p>
+
           </div>
 
         </div>
@@ -159,50 +195,50 @@ function OwnerDashboard() {
           placeholder='Search by name, loan id or vehicle number'
           value={search}
           onChange={(e)=>setSearch(e.target.value)}
-          className='w-full bg-[#101826] border border-[#2A3344] p-5 rounded-2xl text-white outline-none mb-10'
+          className='w-full bg-[#101826] border border-[#2A3344] p-4 md:p-5 rounded-2xl text-white outline-none mb-10 text-sm md:text-base'
         />
 
-        <div className='grid gap-6'>
+        <div className='grid gap-5 md:gap-6'>
 
           {filteredCustomers.map((customer) => (
 
             <div
               key={customer.id}
               onClick={() => setSelectedCustomer(customer)}
-              className='bg-[#101826] border border-[#2A3344] rounded-3xl p-6 cursor-pointer'
+              className='bg-[#101826] border border-[#2A3344] rounded-3xl p-5 md:p-6 cursor-pointer'
             >
 
-              <div className='flex justify-between items-center flex-wrap gap-6'>
+              <div className='flex flex-col xl:flex-row xl:justify-between xl:items-center gap-6'>
 
                 <div>
 
-                  <h1 className='text-3xl text-white font-bold mb-2'>
+                  <h1 className='text-2xl md:text-3xl text-white font-bold mb-2'>
                     {customer.full_name}
                   </h1>
 
-                  <p className='text-gray-400'>
+                  <p className='text-gray-400 text-sm md:text-base'>
                     Loan ID : {customer.loan_id}
                   </p>
 
-                  <p className='text-[#24FFE8]'>
+                  <p className='text-[#24FFE8] text-sm md:text-base mt-1'>
                     Vehicle : {customer.vehicle_number}
                   </p>
 
                 </div>
 
-                <div className='flex flex-col gap-3'>
+                <div className='flex flex-col gap-3 w-full xl:w-[240px]'>
 
-                  <span className='bg-yellow-500/20 text-yellow-400 px-5 py-2 rounded-full'>
+                  <span className='bg-yellow-500/20 text-yellow-400 px-5 py-3 rounded-full text-center text-sm md:text-base'>
                     {customer.approval_status}
                   </span>
 
-                  <span className='bg-red-500/20 text-red-400 px-5 py-2 rounded-full'>
+                  <span className='bg-red-500/20 text-red-400 px-5 py-3 rounded-full text-center text-sm md:text-base'>
                     {customer.recovery_status}
                   </span>
 
                 </div>
 
-                <div className='flex gap-3'>
+                <div className='flex flex-col md:flex-row gap-3 w-full xl:w-auto'>
 
                   {customer.approval_status !== 'approved' && (
                     <button
@@ -210,7 +246,7 @@ function OwnerDashboard() {
                         e.stopPropagation()
                         approveCustomer(customer.id)
                       }}
-                      className='bg-green-500 text-white px-6 py-3 rounded-2xl font-bold'
+                      className='bg-green-500 text-white px-6 py-3 rounded-2xl font-bold w-full'
                     >
                       Approve
                     </button>
@@ -223,7 +259,7 @@ function OwnerDashboard() {
                         e.stopPropagation()
                         moveToRecovery(customer.id)
                       }}
-                      className='bg-red-500 text-white px-6 py-3 rounded-2xl font-bold'
+                      className='bg-red-500 text-white px-6 py-3 rounded-2xl font-bold w-full'
                     >
                       Recovery
                     </button>

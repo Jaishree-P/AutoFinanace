@@ -9,7 +9,6 @@ function FieldDashboard() {
   const navigate = useNavigate()
 
   const [customers, setCustomers] = useState([])
-
   const [selectedCustomer, setSelectedCustomer] = useState(null)
 
   const [search, setSearch] = useState('')
@@ -26,7 +25,7 @@ function FieldDashboard() {
 
   const fetchCustomers = async () => {
 
-    const { data, error } = await supabase
+    const { data } = await supabase
       .from('customers')
       .select('*')
       .order('created_at', { ascending:false })
@@ -34,8 +33,6 @@ function FieldDashboard() {
     if(data){
       setCustomers(data)
     }
-
-    console.log(error)
   }
 
   const fetchCounts = async () => {
@@ -81,12 +78,12 @@ function FieldDashboard() {
 
       <Navbar title='FIELD DASHBOARD' role='FIELD AGENT' />
 
-      <div className='p-6'>
+      <div className='p-4 md:p-6'>
 
-        <div className='flex justify-between items-center flex-wrap gap-5 mb-10'>
+        <div className='flex flex-col md:flex-row md:justify-between md:items-center gap-5 mb-10'>
 
           <h1
-            className='text-5xl text-[#D6A64F]'
+            className='text-4xl md:text-5xl text-[#D6A64F]'
             style={{ fontFamily:'Oswald' }}
           >
             FIELD AGENT PANEL
@@ -94,58 +91,58 @@ function FieldDashboard() {
 
           <button
             onClick={() => navigate('/add-customer')}
-            className='bg-[#D6A64F] text-black px-8 py-4 rounded-2xl font-bold'
+            className='bg-[#D6A64F] text-black px-6 md:px-8 py-4 rounded-2xl font-bold w-full md:w-auto'
           >
             + Add New Record
           </button>
 
         </div>
 
-        <div className='grid md:grid-cols-4 gap-5 mb-10'>
+        <div className='grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-5 mb-10'>
 
-          <div className='bg-[#101826] border border-[#2A3344] rounded-3xl p-6'>
+          <div className='bg-[#101826] border border-[#2A3344] rounded-3xl p-4 md:p-6'>
 
-            <h1 className='text-5xl text-[#D6A64F] mb-2'>
+            <h1 className='text-3xl md:text-5xl text-[#D6A64F] mb-2'>
               {submittedCount}
             </h1>
 
-            <p className='text-gray-400'>
+            <p className='text-gray-400 text-sm md:text-base'>
               Submitted
             </p>
 
           </div>
 
-          <div className='bg-[#101826] border border-[#2A3344] rounded-3xl p-6'>
+          <div className='bg-[#101826] border border-[#2A3344] rounded-3xl p-4 md:p-6'>
 
-            <h1 className='text-5xl text-yellow-400 mb-2'>
+            <h1 className='text-3xl md:text-5xl text-yellow-400 mb-2'>
               {pendingCount}
             </h1>
 
-            <p className='text-gray-400'>
+            <p className='text-gray-400 text-sm md:text-base'>
               Pending
             </p>
 
           </div>
 
-          <div className='bg-[#101826] border border-[#2A3344] rounded-3xl p-6'>
+          <div className='bg-[#101826] border border-[#2A3344] rounded-3xl p-4 md:p-6'>
 
-            <h1 className='text-5xl text-green-400 mb-2'>
+            <h1 className='text-3xl md:text-5xl text-green-400 mb-2'>
               {approvedCount}
             </h1>
 
-            <p className='text-gray-400'>
+            <p className='text-gray-400 text-sm md:text-base'>
               Approved
             </p>
 
           </div>
 
-          <div className='bg-[#101826] border border-[#2A3344] rounded-3xl p-6'>
+          <div className='bg-[#101826] border border-[#2A3344] rounded-3xl p-4 md:p-6'>
 
-            <h1 className='text-5xl text-red-400 mb-2'>
+            <h1 className='text-3xl md:text-5xl text-red-400 mb-2'>
               {recoveryCount}
             </h1>
 
-            <p className='text-gray-400'>
+            <p className='text-gray-400 text-sm md:text-base'>
               Recovery
             </p>
 
@@ -158,36 +155,36 @@ function FieldDashboard() {
           placeholder='Search by name, loan id or vehicle number'
           value={search}
           onChange={(e)=>setSearch(e.target.value)}
-          className='w-full bg-[#101826] border border-[#2A3344] p-5 rounded-2xl text-white outline-none mb-10'
+          className='w-full bg-[#101826] border border-[#2A3344] p-4 md:p-5 rounded-2xl text-white outline-none mb-10 text-sm md:text-base'
         />
 
-        <div className='grid gap-6'>
+        <div className='grid gap-5 md:gap-6'>
 
           {filteredCustomers.map((customer) => (
 
             <div
               key={customer.id}
               onClick={() => setSelectedCustomer(customer)}
-              className='bg-[#101826] border border-[#2A3344] rounded-3xl p-6 cursor-pointer'
+              className='bg-[#101826] border border-[#2A3344] rounded-3xl p-5 md:p-6 cursor-pointer'
             >
 
-              <div className='flex justify-between items-center flex-wrap gap-6'>
+              <div className='flex flex-col xl:flex-row xl:justify-between xl:items-center gap-6'>
 
                 <div>
 
-                  <h1 className='text-3xl text-white font-bold mb-2'>
+                  <h1 className='text-2xl md:text-3xl text-white font-bold mb-2'>
                     {customer.full_name}
                   </h1>
 
-                  <p className='text-gray-400'>
+                  <p className='text-gray-400 text-sm md:text-base'>
                     Loan ID : {customer.loan_id}
                   </p>
 
-                  <p className='text-[#24FFE8]'>
+                  <p className='text-[#24FFE8] text-sm md:text-base mt-1'>
                     Vehicle : {customer.vehicle_number}
                   </p>
 
-                  <p className='text-gray-500 mt-2'>
+                  <p className='text-gray-500 mt-3 text-xs md:text-sm'>
                     Added On :
                     {' '}
                     {new Date(customer.created_at).toLocaleString()}
@@ -195,17 +192,17 @@ function FieldDashboard() {
 
                 </div>
 
-                <div className='flex flex-col gap-3 min-w-[220px]'>
+                <div className='flex flex-col gap-3 w-full xl:w-[240px]'>
 
-                  <span className='bg-yellow-500/20 text-yellow-400 px-5 py-2 rounded-full text-center'>
+                  <span className='bg-yellow-500/20 text-yellow-400 px-5 py-3 rounded-full text-center text-sm md:text-base'>
                     Approval : {customer.approval_status}
                   </span>
 
-                  <span className='bg-red-500/20 text-red-400 px-5 py-2 rounded-full text-center'>
+                  <span className='bg-red-500/20 text-red-400 px-5 py-3 rounded-full text-center text-sm md:text-base'>
                     Recovery : {customer.recovery_status}
                   </span>
 
-                  <span className='bg-cyan-400/20 text-cyan-400 px-5 py-2 rounded-full text-center'>
+                  <span className='bg-cyan-400/20 text-cyan-400 px-5 py-3 rounded-full text-center text-sm md:text-base'>
                     Visit : {customer.visited_status}
                   </span>
 
